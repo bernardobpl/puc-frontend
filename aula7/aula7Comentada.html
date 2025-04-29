@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Aula 7</title>
+  </head>
+
+  <body>
+    <form id="form">
+      <input id="new-ingredient"/>
+      <button type="submit">Add</button>
+    </form>
+
+    <ul id="ingredients">
+    </ul>
+
+  </body>
+
+  <script>
+    // pega os elementos HTML em forma de objetos javascript para que possamos manipular eles usando código
+    const newingredientInput = document.getElementById("new-ingredient")
+    const ingredientList = document.getElementById("ingredients")
+    const form = document.getElementById("form")
+
+    // ao criar páginas, não utilizamos HTML engessado. Nós buscamos os dados no código e decidimos o que fazer com ele
+    const ingredients = ["Frango", "Alho", "Creme de leite", "Massa de tomate"]
+
+    // para cada ingrediente da lista, executamos a função de adicionar, e agora nosso HTML é mais dinâmico
+    for(const ing of ingredients){
+      add(ing)
+    }
+
+    // pq usar form em vez de só um botão comum? nesse exemplo usamos o form só para incluir a funcionalidade de apertar "Enter" e ele executar a função
+    // se usarmos só o botão, o botão só iria funcionar com clique e isso é bem ruim para experiência do usuário
+
+    // coloca uma escuta no nosso elemento "form" para toda vez que um evento "submit" acontecer, ele executar uma função
+    form.addEventListener("submit", (event) => {
+      // bloqueia o comportamento padrão de formulario HTML: o submit envia uma requisição HTTP POST para URL que estamos e recarrega a página
+      event.preventDefault()
+      // após bloquear esse comportamento, executamos a função para adicionar o elemento
+      add()
+    })
+
+    function remove(li){
+      // recebe uma tag html, e passa ela como argumento para a função "removeChild" para que seja deletado
+      ingredientList.removeChild(li)
+    }
+    
+    function add(value){
+      // pega o novo ingrediente que vai entrar na lista
+      let newIngredient = newingredientInput.value
+
+      // se algum valor for passado para a função, usaremos esse valor ao invés do valor do input
+      if(value !== undefined){
+        newIngredient = value
+      }
+
+      // cria uma nova tag html do tipo "li"
+      const newLi = document.createElement("li")
+
+      // coloca o valor do ingrediente dentro da tag que criamos
+      newLi.innerHTML = newIngredient
+
+      // cria uma nova tag html do tipo "button" que servirá para deletar o nosso "li"
+      const newDeleteBtn = document.createElement("button")
+
+      // coloca um "X" dentro do botão
+      newDeleteBtn.innerHTML = "X"
+
+      // faz o botão esperar pelo evento "click" e quando acontecer ele executa a função que foi passada
+      newDeleteBtn.addEventListener("click", () => {
+        remove(newLi) // envia o elemento "li" que criamos como argumento para a nossa função "remove"
+      })
+
+      // insere o botão dentro da tag "li" como um elemento filho
+      newLi.appendChild(newDeleteBtn)
+
+      // insere o "li" dentro da lista como elemento filho
+      ingredientList.appendChild(newLi)
+
+      // reseta o input de ingrediente para que possa ser inserido um novo ingrediente
+      newingredientInput.value = ""
+    }
+
+  </script>
+</html>

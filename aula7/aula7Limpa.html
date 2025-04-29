@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Aula 7</title>
+  </head>
+
+  <body>
+    <form id="form">
+      <input id="new-ingredient"/>
+      <button type="submit">Add</button>
+    </form>
+
+    <ul id="ingredients">
+    </ul>
+
+  </body>
+
+  <script>
+    const newingredientInput = document.getElementById("new-ingredient")
+    const ingredientList = document.getElementById("ingredients")
+    const form = document.getElementById("form")
+
+    const ingredients = ["Frango", "Alho", "Creme de leite", "Massa de tomate"]
+    for(const ing of ingredients){
+      add(ing)
+    }
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault()
+      add()
+    })
+
+    function remove(li){
+      ingredientList.removeChild(li)
+    }
+    
+    function add(value){
+      let newIngredient = newingredientInput.value
+
+      if(value !== undefined){
+        newIngredient = value
+      }
+
+      const newLi = document.createElement("li")
+      newLi.innerHTML = newIngredient
+
+      const newDeleteBtn = document.createElement("button")
+      newDeleteBtn.innerHTML = "X"
+      newDeleteBtn.addEventListener("click", () => {
+        remove(newLi)
+      })
+
+      newLi.appendChild(newDeleteBtn)
+      ingredientList.appendChild(newLi)
+
+      newingredientInput.value = ""
+    }
+
+  </script>
+</html>
