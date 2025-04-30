@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Aula 8</title>
+  </head>
+
+  <body>
+    <h3>To Do List</h3>
+
+    <ul id="todoUl">
+
+    </ul>
+
+    <form id="newTodoForm">
+      <input id="newTodoInput"/>
+      <button type="submit"> Add </button>
+    </form>
+
+    <button onclick="clearTodoList()">Clear</button>
+    <button id="showTodosBtn">Mostra variavel Todos</button>
+  </body>
+
+  <script>
+    const todoUl = document.getElementById("todoUl")
+    const newTodoInput = document.getElementById("newTodoInput")
+    const newTodoForm = document.getElementById("newTodoForm")
+    const showTodosBtn = document.getElementById("showTodosBtn")
+
+    let idCounter = 3
+
+    let todos = [
+      {
+        id: 1,
+        name: "Fazer compra",
+        isCompleted: false
+      },
+      {
+        id: 2,
+        name: "Lavar a louça",
+        isCompleted: false
+      },
+      {
+        id: 3,
+        name: "Arrumar a cama",
+        isCompleted: false
+      },
+      {
+        id: "kajsbfjkasbfhk",
+        name: "Seila",
+        isCompleted: true
+      }
+    ]
+
+    showTodosBtn.addEventListener("click", () => {
+      console.log(todos)
+    })
+
+    function render() {
+      todoUl.replaceChildren([])
+      populateTodoList()
+    }
+
+    function clearTodoList(){
+      todos = []
+      todoUl.replaceChildren([])
+    }
+
+    function populateTodoList() {
+      todos.forEach(i => addTodo(i))
+    }
+
+    newTodoForm.addEventListener("submit", (e) => {
+      e.preventDefault()
+      const newTodo = {
+        id: idCounter+1,
+        name: newTodoInput.value,
+        isCompleted: false
+      }
+      idCounter++
+      todos.push(newTodo)
+      render()
+      newTodoInput.value = ""
+    })
+    
+    function deleteTodo(id) {
+      todos = todos.filter(todo => todo.id !== id)
+    }
+
+    function editIsCompleted(id, isCompleted){
+      todos = todos.map((todo) => {
+        if(todo.id === id){
+          todo.isCompleted = isCompleted
+          return todo
+        }
+        return todo
+      })
+    }
+
+    function addTodo(todo) {
+      const newLi = document.createElement("li")
+      newLi.innerHTML = todo.name
+      // <li> Fazer compra </li>
+      
+      const deleteBtn = document.createElement("button")
+      deleteBtn.innerHTML = "X"
+      deleteBtn.addEventListener("click", () => {
+        deleteTodo(todo.id)
+        render()
+      })
+
+      const checkbox = document.createElement("input")
+      checkbox.type = "checkbox"
+      checkbox.checked = todo.isCompleted
+      checkbox.addEventListener("change", (e) => {
+        editIsCompleted(todo.id, e.target.checked)
+        render()
+      })
+
+      newLi.appendChild(checkbox)
+      newLi.appendChild(deleteBtn)
+      // <li>
+        //    Fazer compra
+        //    <input type="checkbox" checked=todo.isCompleted />
+        //    <button>X</button>
+      // </li>
+      todoUl.appendChild(newLi)
+    }
+
+    render()
+  </script>
+</html>
