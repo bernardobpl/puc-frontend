@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Aula 8</title>
+  </head>
+
+  <body>
+    <div>
+      <h3>To Do List</h3>
+      <ul id="todoUl">
+      </ul>
+      <form id="newTodoForm">
+        <input id="newTodoInput"/>
+        <button type="submit"> Add </button>
+      </form>
+      <button onclick="clearTodoList()">Clear</button>
+      <button id="showTodosBtn">Mostra variavel Todos</button>
+    </div>
+  </body>
+
+  <script src="./todos.js"></script>
+  <script>
+    let data = []
+    
+    const fetchPosts = async () => {
+      try {
+        const res = await fetch("https://jsonplaceholder.typicode.com/posts")
+        data = await res.json()
+        console.log(data)
+      } catch(er) {
+        console.log("deu erro")
+      }
+    }
+
+    fetchPosts()
+  </script>
+</html>
